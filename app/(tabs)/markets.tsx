@@ -2,10 +2,10 @@ import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function ConvertScreen() {
+export default function MarketScreen() {
   return (
     <SafeAreaView style={styles.container}>
-      <Text>ConvertScreen</Text>
+      <Text>MarketScreen</Text>
     </SafeAreaView>
   );
 }
