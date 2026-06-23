@@ -1,9 +1,0 @@
-{
-  "plugins": ["prettier-plugin-organize-imports"]
-}
-
-
-=
-
-// commit and push initial pr
-// Create a new branch and start working on the tabs and convert page
