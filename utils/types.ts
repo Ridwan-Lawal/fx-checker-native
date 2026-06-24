@@ -31,3 +31,19 @@ export type ChartPoint = {
   timestamp: number; // epoch ms
   value: number;
 };
+
+// *** STORE TYPES *** // starts here
+
+export interface Fave {
+  currencyPair: string;
+  currencyRate: number;
+  currencyChange: number;
+}
+
+export interface Log {
+  id: string;
+  conversionRate: number;
+  conversionDate: Date;
+  conversionSendPrice: string;
+  convertionRecievePrice: string;
+}

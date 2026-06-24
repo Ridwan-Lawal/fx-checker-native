@@ -10,6 +10,8 @@ import {
   useGetRatesPerBaseCurrency,
   useGetTimeSeriesRates,
 } from "@/hooks/useRates";
+import { useFaveStore } from "@/store/useFaves";
+import { useLogStore } from "@/store/useLogStore";
 import {
   colors,
   fontFamily,
@@ -28,10 +30,11 @@ import {
 } from "@gorhom/bottom-sheet";
 import { Image } from "expo-image";
 import React, { useCallback, useMemo, useRef, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LineChart } from "react-native-wagmi-charts";
+import * as Crypto from "expo-crypto";
 
 const currencyFlag = require("@/assets/images/convert/demoflag.png");
 const seperatorIcon = require("@/assets/images/convert/seperator-icon.svg");
@@ -39,6 +42,9 @@ const seperatorIcon = require("@/assets/images/convert/seperator-icon.svg");
 const CHART_CONTAINER_PADDING = 18;
 
 export default function ConvertScreen() {
+  const addFave = useFaveStore((state) => state.addFave);
+  const faves = useFaveStore((state) => state.faves);
+  const addLog = useLogStore((state) => state.addLog);
   const [chartContainerWidth, setChartContainerWidth] = useState(0);
   const sheetRef = useRef<BottomSheetModal>(null);
   const currencySheetRef = useRef<BottomSheetModal>(null);
@@ -160,6 +166,31 @@ export default function ConvertScreen() {
     [],
   );
 
+  const isCurrencyPairFaved = faves.some(
+    (fave) => fave.currencyPair === `${sendCurrency}/${receiveCurrency}`,
+  );
+
+  function handleAddFavePair() {
+    const faveData = {
+      currencyPair: `${sendCurrency}/${receiveCurrency}`,
+      currencyRate: rate ?? 0,
+      currencyChange: chartChangePct,
+    };
+    addFave(faveData);
+  }
+
+  function handleAddCurrencyPairToLog() {
+    const currencyPairData = {
+      id: Crypto.randomUUID(),
+      conversionRate: rate ?? 0,
+      conversionDate: new Date(),
+      conversionSendPrice: sendCurrency,
+      convertionRecievePrice: receiveCurrency,
+    };
+
+    addLog(currencyPairData);
+  }
+
   if (hasError) {
     return (
       <SafeAreaView style={styles.container}>
@@ -216,16 +247,28 @@ export default function ConvertScreen() {
                 1 {sendCurrency} = {rate?.toFixed(4) ?? "—"} {receiveCurrency}
               </Text>
 
-              <View style={styles.faveContainer}>
-                <FontAwesome name="star-o" size={15} color="#9a9aa0" />
+              <Pressable
+                onPress={handleAddFavePair}
+                style={styles.faveContainer}
+              >
+                <FontAwesome
+                  name={isCurrencyPairFaved ? "star" : "star-o"}
+                  size={15}
+                  color={
+                    isCurrencyPairFaved ? colors.lime[500] : colors.neutral[450]
+                  }
+                />
 
                 <Text style={styles.faveText}>favourite</Text>
-              </View>
+              </Pressable>
             </View>
           </View>
 
           {/* log button */}
-          <AnimatedPressable style={styles.conversionLogButton}>
+          <AnimatedPressable
+            style={styles.conversionLogButton}
+            onPress={handleAddCurrencyPairToLog}
+          >
             <Ionicons name="add" size={15} color={colors.neutral[900]} />
             <Text style={styles.conversionLogButtonText}>log conversion</Text>
           </AnimatedPressable>
@@ -509,3 +552,6 @@ const styles = StyleSheet.create({
     padding: 20,
   },
 });
+
+// Logging conversion properties zustand
+//  favourite functionality which is zustand

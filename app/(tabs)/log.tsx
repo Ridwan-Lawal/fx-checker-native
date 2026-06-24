@@ -1,16 +1,13 @@
-
-
-import {  StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context';
-
+import { StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HistoryScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <Text>LogScreen</Text>
     </SafeAreaView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
