@@ -22,6 +22,6 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - run: pnpm type-check          # tsc --noEmit
-      - run: pnpm lint                 # eslint
+      - run: pnpm type-check # tsc --noEmit
+      - run: pnpm lint # eslint
       - run: pnpm exec prettier --check .
