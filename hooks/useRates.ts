@@ -1,4 +1,5 @@
 import {
+  getCurrenciesRateByTime,
   getCurrencyRate,
   getCurrencyRatesPerBaseCurrency,
   getMarketTimeSeries,
@@ -9,6 +10,26 @@ import { MARQUEE_BASE, MARQUEE_SYMBOLS } from "@/utils/contants";
 import { toMarqueeItems } from "@/utils/marquee";
 import { CurrencyData, RateType, TimeSeriesRateType } from "@/utils/types";
 import { useQuery } from "@tanstack/react-query";
+
+export function useGetRateForComparison(
+  baseCurrency: string,
+  startDate: string,
+  endDate: string,
+) {
+  const {
+    data: rateData,
+    isPending: isFetchingRate,
+    error: rateFetchError,
+    refetch: refetchRate,
+  } = useQuery<TimeSeriesRateType>({
+    queryKey: ["rate-for-comparison", baseCurrency],
+    queryFn: () => getCurrenciesRateByTime(baseCurrency, startDate, endDate),
+    staleTime: 1000 * 60 * 60,
+    enabled: !!baseCurrency,
+  });
+
+  return { rateData, isFetchingRate, rateFetchError, refetchRate };
+}
 
 export function useGetRate(
   currencyToSend: CurrencyData,

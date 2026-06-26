@@ -6,6 +6,25 @@ import {
 } from "@/utils/types";
 import { cache } from "react";
 
+export async function getCurrenciesRateByTime(
+  base: string,
+  startDate: string,
+  endDate: string,
+): Promise<TimeSeriesRateType> {
+  try {
+    const res = await api.get<TimeSeriesRateType>(`/${startDate}..${endDate}`, {
+      params: {
+        base: base.toUpperCase(),
+      },
+    });
+
+    return res.data;
+  } catch (error) {
+    devLog(error);
+    throw new Error("Something went wrong fetching rates");
+  }
+}
+
 export async function getCurrencyRatesPerBaseCurrency(
   baseCurrency: string,
 ): Promise<RateType> {

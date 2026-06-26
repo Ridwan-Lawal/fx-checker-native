@@ -92,6 +92,8 @@ export default function ConvertScreen() {
     [timeSeriesData, receiveCurrency],
   );
 
+  console.log(timeSeriesData);
+
   // 30-day change for the chart header (first -> last point)
   const chartChangePct =
     chartData.length > 1

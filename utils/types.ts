@@ -47,3 +47,5 @@ export interface Log {
   conversionSendPrice: string;
   convertionRecievePrice: string;
 }
+
+export type TimeFrames = "1d" | "7d" | "30d" | "90d" | "1y" | "max";
