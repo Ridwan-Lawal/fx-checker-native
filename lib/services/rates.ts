@@ -6,6 +6,25 @@ import {
 } from "@/utils/types";
 import { cache } from "react";
 
+export async function getMarketRates(
+  base: string,
+  quote: string,
+): Promise<RateType> {
+  try {
+    const res = await api.get<RateType>("/latest", {
+      params: {
+        base: base.toUpperCase(),
+        symbols: quote?.toUpperCase(),
+      },
+    });
+
+    return res.data;
+  } catch (error: unknown) {
+    devLog(error);
+    throw new Error("Something went wrong fetching rates");
+  }
+}
+
 export async function getCurrenciesRateByTime(
   base: string,
   startDate: string,
