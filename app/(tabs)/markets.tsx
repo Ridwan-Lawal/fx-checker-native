@@ -42,7 +42,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderBottomWidth: 1,
     borderBottomColor: "#1f1f22",
-    backdropFilter: "",
   },
   headerText: {
     color: colors.neutral[70],
